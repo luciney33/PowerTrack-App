@@ -1,0 +1,31 @@
+package com.example.powertrack_app.data.remote.interceptor
+
+import com.example.powertrack_app.common.Constantes
+import com.example.powertrack_app.data.local.TokenManager
+import okhttp3.Interceptor
+import okhttp3.Response
+import javax.inject.Inject
+
+class AuthInterceptor @Inject constructor(
+    private val tokenManager: TokenManager
+) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
+        val path = request.url.encodedPath
+
+        if (path.contains(Constantes.API_AUTH_LOGIN) ||
+            path.contains(Constantes.API_AUTH_REGISTER) ||
+            path.contains(Constantes.API_AUTH_ACTIVAR)) {
+            return chain.proceed(request)
+        }
+
+        val token = tokenManager.getAccessToken()
+        val newRequestBuilder = request.newBuilder()
+
+        if (!token.isNullOrBlank()) {
+            newRequestBuilder.header(Constantes.AUTH_HEADER, "${Constantes.AUTH_BEARER_PREFIX}$token")
+        }
+
+        return chain.proceed(newRequestBuilder.build())
+    }
+}
