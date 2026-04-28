@@ -38,8 +38,20 @@ data class UsuarioEntity(
     val password: String,
     val rol: String = Constantes.USER,
     val activo: Boolean = true,
+    val formularioCompletado: Boolean = false,
+    val recomendacion: Int? = null,
     val publicKey: String? = null,
     val certificado: String? = null
+)
+
+data class PerfilRequestEntity(
+    val genero: Int,
+    val edad: Int,
+    val objetivo: Int,
+    val nivel: Int,
+    val diasEntrenamiento: Int,
+    val lesion: Int,
+    val preferencia: Int
 )
 
 fun EjercicioEntity.toDomain() = Ejercicio(
@@ -79,6 +91,8 @@ fun UsuarioEntity.toDomain() = Usuario(
     email = email,
     nombre = nombre,
     rol = rol,
+    formularioCompletado = formularioCompletado,
+    recomendacion = recomendacion,
     publicKey = publicKey?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
     certificado = certificado?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
     certificadoVerificado = false

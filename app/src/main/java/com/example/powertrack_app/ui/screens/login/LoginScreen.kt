@@ -19,11 +19,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.ui.common.UiEvent
-import com.example.powertrack_app.ui.theme.NavigationComposeTheme
+import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
+    onNeedsPerfil: () -> Unit,
     onNavigateToRegister: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -34,6 +35,7 @@ fun LoginScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.LoginSuccess -> onLoginSuccess()
+                is UiEvent.LoginSuccessNeedsPerfil -> onNeedsPerfil()
                 is UiEvent.ShowError -> Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 else -> {}
             }
@@ -110,7 +112,7 @@ fun LoginContent(
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable
 fun LoginScreenPreview() {
-    NavigationComposeTheme {
+    PowerTrackTheme {
         LoginContent(
             state = LoginState(username = Constantes.TEXT_USUARIO_EJEMPLO),
             onEvent = {},

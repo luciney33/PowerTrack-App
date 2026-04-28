@@ -41,7 +41,7 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.domain.model.Ejercicio
-import com.example.powertrack_app.ui.theme.NavigationComposeTheme
+import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
 fun DetalleEntrenamientoScreen(
@@ -177,7 +177,7 @@ fun EjercicioItem(ejercicio: Ejercicio, imageLoader: ImageLoader) {
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable
 fun DetalleEntrenamientoPreview() {
-    NavigationComposeTheme {
+    PowerTrackTheme {
         DetalleEntrenamientoContent(
             state = DetalleState(
                 id = 1,

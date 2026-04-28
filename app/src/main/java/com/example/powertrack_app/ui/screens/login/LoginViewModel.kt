@@ -57,13 +57,15 @@ class LoginViewModel @Inject constructor(
                     tokenManager.saveRefreshToken(result.data.refreshToken)
 
                     _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isLoginSuccessful = true,
-                            error = null
-                        )
+                        it.copy(isLoading = false, isLoginSuccessful = true, error = null)
                     }
-                    _uiEvent.send(UiEvent.LoginSuccess)
+
+                    val formularioCompletado = result.data.usuario.formularioCompletado
+                    if (formularioCompletado) {
+                        _uiEvent.send(UiEvent.LoginSuccess)
+                    } else {
+                        _uiEvent.send(UiEvent.LoginSuccessNeedsPerfil)
+                    }
                 }
                 is NetworkResult.Error -> {
                     _state.update {

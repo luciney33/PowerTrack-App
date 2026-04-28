@@ -42,12 +42,7 @@ import com.example.powertrack_app.ui.screens.dragonBall.DragonBallListScreen
 import com.example.powertrack_app.ui.screens.gym.detalleEntrenamiento.DetalleEntrenamientoScreen
 import com.example.powertrack_app.ui.screens.gym.listadoEntrenamiento.ListaEntrenamientoScreen
 import com.example.powertrack_app.ui.screens.login.LogoutViewModel
-import com.example.powertrack_app.ui.screens.secretos.SecretosMainScreen
-import com.example.powertrack_app.ui.screens.secretos.lista.ListaSecretosScreen
-import com.example.powertrack_app.ui.screens.secretos.ver.VerSecretoScreen
-import com.example.powertrack_app.ui.screens.secretos.compartir.CompartirSecretoScreen
-import com.example.powertrack_app.ui.screens.secretos.crear.CrearSecretoScreen
-import com.example.powertrack_app.ui.theme.NavigationComposeTheme
+import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
 fun HomeScreen(onLogout: () -> Unit, logoutViewModel: LogoutViewModel = hiltViewModel()) {
@@ -79,16 +74,7 @@ fun HomeScreen(onLogout: () -> Unit, logoutViewModel: LogoutViewModel = hiltView
                     icon = { Icon(imageVector = Icons.Default.Public, contentDescription = null) },
                     label = { Text(Constantes.TEXT_DRAGON_BALL) }
                 )
-                NavigationBarItem(
-                    selected = currentRoute?.contains("Secreto") == true,
-                    onClick = {
-                        navController.navigate(Screen.SecretosMain) {
-                            launchSingleTop = true
-                        }
-                    },
-                    icon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
-                    label = { Text(Constantes.TEXT_SECRETOS) }
-                )
+
                 NavigationBarItem(
                     selected = false,
                     onClick = { 
@@ -125,55 +111,6 @@ fun HomeScreen(onLogout: () -> Unit, logoutViewModel: LogoutViewModel = hiltView
             }
             composable<Screen.ApiExterna> { DragonBallListScreen() }
 
-            composable<Screen.SecretosMain> {
-                SecretosMainScreen(
-                    onListaSecretos = {
-                        navController.navigate(Screen.ListaSecretos)
-                    },
-                    onCrearSecreto = {
-                        navController.navigate(Screen.CrearSecreto)
-                    },
-                    onLogout = {
-                        logoutViewModel.logout {
-                            onLogout()
-                        }
-                    }
-                )
-            }
-
-            composable<Screen.ListaSecretos> {
-                ListaSecretosScreen(
-                    onBack = { navController.popBackStack() },
-                    onVerSecreto = { id ->
-                        navController.navigate(Screen.VerSecreto(id))
-                    },
-                    onCompartirSecreto = { id ->
-                        navController.navigate(Screen.CompartirSecreto(id))
-                    }
-                )
-            }
-
-            composable<Screen.CrearSecreto> {
-                CrearSecretoScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
-            composable<Screen.VerSecreto> { backStackEntry ->
-                val route = backStackEntry.toRoute<Screen.VerSecreto>()
-                VerSecretoScreen(
-                    secretoId = route.id,
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
-            composable<Screen.CompartirSecreto> { backStackEntry ->
-                val route = backStackEntry.toRoute<Screen.CompartirSecreto>()
-                CompartirSecretoScreen(
-                    secretoId = route.secretoId,
-                    onBack = { navController.popBackStack() }
-                )
-            }
         }
     }
 }
@@ -250,7 +187,7 @@ fun HomeCheckPreview() {
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable
 fun HomeBottomBarPreview() {
-    NavigationComposeTheme {
+    PowerTrackTheme {
         Scaffold(
             bottomBar = {
                 NavigationBar {

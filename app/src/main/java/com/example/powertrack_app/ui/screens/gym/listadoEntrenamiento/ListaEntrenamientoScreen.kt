@@ -39,7 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.domain.model.Entrenamiento
-import com.example.powertrack_app.ui.theme.NavigationComposeTheme
+import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
 fun ListaEntrenamientoScreen(
@@ -129,7 +129,7 @@ fun ListaEntrenamientoPreview() {
         Entrenamiento(3, Constantes.TEXT_PIERNA, Constantes.TEXT_DIA_PESADO, emptyList())
     )
 
-    NavigationComposeTheme {
+    PowerTrackTheme {
         ListaEntrenamientoContent(
             state = ListaState(entrenamientos = mockEntrenamientos),
             onNavigateToDetail = {},

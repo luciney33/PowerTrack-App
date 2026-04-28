@@ -149,6 +149,8 @@ object Constantes {
     const val API_USUARIOS_PUBLIC_KEY = "/api/usuarios/public-key"
     const val API_CRYPTO_PUBLIC_KEY = "/api/crypto/public-key"
     const val API_AUTH_ACTIVAR = "/api/auth/activar"
+    const val API_PERFIL = "api/perfil"
+    const val API_PERFIL_COMPLETAR = "api/perfil/completar"
 
     // Errores de Secretos
     const val ERROR_PASSWORD_INCORRECTA = "Contraseña incorrecta"

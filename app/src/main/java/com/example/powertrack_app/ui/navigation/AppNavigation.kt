@@ -8,6 +8,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.powertrack_app.ui.screens.HomeScreen
 import com.example.powertrack_app.ui.screens.login.LoginScreen
 import com.example.powertrack_app.ui.screens.login.LogoutViewModel
+import com.example.powertrack_app.ui.screens.perfil.PerfilFormScreen
 import com.example.powertrack_app.ui.screens.register.RegisterScreen
 
 @Composable
@@ -24,6 +25,9 @@ fun AppNavigation(
                     onLoginSuccess = {
                         backStack.clear()
                         backStack.add(Screen.Home)
+                    },onNeedsPerfil = {
+                        backStack.clear()
+                        backStack.add(Screen.PerfilForm)
                     },
                     onNavigateToRegister = {
                         backStack.add(Screen.Register)
@@ -35,6 +39,15 @@ fun AppNavigation(
                 RegisterScreen(
                     onNavigateBack = { backStack.removeLastOrNull() },
                     onRegisterSuccess = { backStack.removeLastOrNull() }
+                )
+            }
+
+            entry<Screen.PerfilForm> {
+                PerfilFormScreen(
+                    onPerfilCompletado = {
+                        backStack.clear()
+                        backStack.add(Screen.Home)
+                    }
                 )
             }
 

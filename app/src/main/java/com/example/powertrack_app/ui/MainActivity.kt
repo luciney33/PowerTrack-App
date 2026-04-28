@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.powertrack_app.ui.navigation.AppNavigation
-import com.example.powertrack_app.ui.theme.NavigationComposeTheme
+import com.example.powertrack_app.ui.theme.PowerTrackTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NavigationComposeTheme {
+            PowerTrackTheme {
                 Surface(
                     modifier = Modifier.Companion.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

@@ -7,11 +7,13 @@ import com.example.powertrack_app.data.remote.api.GymApiService
 import com.example.powertrack_app.data.remote.entity.EntrenamientoEntity
 import com.example.powertrack_app.data.remote.entity.LoginRequest
 import com.example.powertrack_app.data.remote.entity.LoginResponse
+import com.example.powertrack_app.data.remote.entity.PerfilRequestEntity
 import com.example.powertrack_app.data.remote.entity.UpdatePublicKeyRequest
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import com.example.powertrack_app.data.remote.entity.toDomain
 import com.example.powertrack_app.domain.model.Ejercicio
 import com.example.powertrack_app.domain.model.Entrenamiento
+import com.example.powertrack_app.domain.model.PerfilRequest
 import com.example.powertrack_app.domain.model.Usuario
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -138,6 +140,40 @@ class GymRepository @Inject constructor(
             }
         } catch (e: Exception) {
             NetworkResult.Error("${Constantes.ERROR_RED_ACTUALIZAR_CLAVE_PUBLICA}${e.message}")
+        }
+    }
+    suspend fun completarPerfil(perfil: PerfilRequest): NetworkResult<Usuario> {
+        return try {
+            val entity = PerfilRequestEntity(
+                genero = perfil.genero,
+                edad = perfil.edad,
+                objetivo = perfil.objetivo,
+                nivel = perfil.nivel,
+                diasEntrenamiento = perfil.diasEntrenamiento,
+                lesion = perfil.lesion,
+                preferencia = perfil.preferencia
+            )
+            val response = apiService.completarPerfil(entity)
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Error al completar perfil: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+    suspend fun getPerfil(): NetworkResult<Usuario> {
+        return try {
+            val response = apiService.getPerfil()
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Error al obtener perfil")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
         }
     }
 
