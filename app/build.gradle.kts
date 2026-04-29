@@ -66,6 +66,10 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
 
+    // Calendario
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.3.0")
+    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.3.0")
+
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)

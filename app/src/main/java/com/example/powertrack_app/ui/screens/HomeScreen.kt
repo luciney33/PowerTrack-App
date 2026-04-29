@@ -1,22 +1,15 @@
 package com.example.powertrack_app.ui.screens
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Public
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -25,27 +18,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.ui.navigation.Screen
-import com.example.powertrack_app.ui.screens.dragonBall.DragonBallListScreen
-import com.example.powertrack_app.ui.screens.gym.detalleEntrenamiento.DetalleEntrenamientoScreen
-import com.example.powertrack_app.ui.screens.gym.listadoEntrenamiento.ListaEntrenamientoScreen
-import com.example.powertrack_app.ui.screens.login.LogoutViewModel
+import com.example.powertrack_app.ui.screens.calendario.CalendarioScreen
+import com.example.powertrack_app.ui.screens.ejercicios.EjerciciosScreen
+import com.example.powertrack_app.ui.screens.parati.ParaTiScreen
+import com.example.powertrack_app.ui.screens.perfil.usuario.PerfilUsuarioScreen
+import com.example.powertrack_app.ui.screens.registroEntrenamiento.RegistroScreen
 import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
-fun HomeScreen(onLogout: () -> Unit, logoutViewModel: LogoutViewModel = hiltViewModel()) {
+fun HomeScreen(onLogout: () -> Unit) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -54,139 +43,83 @@ fun HomeScreen(onLogout: () -> Unit, logoutViewModel: LogoutViewModel = hiltView
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
-                    selected = currentRoute?.contains("ListaEntrenamiento") == true ||
-                              currentRoute?.contains("DetalleEntrenamiento") == true,
+                    selected = currentRoute?.contains("ParaTi") == true ||
+                            currentRoute?.contains("Home") == true,
                     onClick = {
-                        navController.navigate(Screen.ListaEntrenamiento) {
+                        navController.navigate(Screen.ParaTi) {
                             launchSingleTop = true
                         }
                     },
-                    icon = { Icon(Icons.AutoMirrored.Filled.List, null) },
-                    label = { Text(Constantes.TEXT_GYM) }
+                    icon = { Icon(Icons.Default.Home, null) },
+                    label = { Text("Para ti") }
                 )
                 NavigationBarItem(
-                    selected = currentRoute?.contains("ApiExterna") == true,
+                    selected = currentRoute?.contains("Calendario") == true,
                     onClick = {
-                        navController.navigate(Screen.ApiExterna) {
+                        navController.navigate(Screen.Calendario) {
                             launchSingleTop = true
                         }
                     },
-                    icon = { Icon(imageVector = Icons.Default.Public, contentDescription = null) },
-                    label = { Text(Constantes.TEXT_DRAGON_BALL) }
+                    icon = { Icon(Icons.Default.CalendarMonth, null) },
+                    label = { Text("Calendario") }
                 )
-
                 NavigationBarItem(
-                    selected = false,
-                    onClick = { 
-                        logoutViewModel.logout {
-                            onLogout()
+                    selected = currentRoute?.contains("NuevoRegistro") == true,
+                    onClick = {
+                        navController.navigate(Screen.NuevoRegistro) {
+                            launchSingleTop = true
                         }
-                     },
-                    icon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
-                    label = { Text(Constantes.TEXT_SALIR) }
+                    },
+                    icon = { Icon(Icons.Default.AddCircle, null) },
+                    label = { Text("Registrar") }
+                )
+                NavigationBarItem(
+                    selected = currentRoute?.contains("Perfil") == true,
+                    onClick = {
+                        navController.navigate(Screen.PerfilUsuario) {
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = { Icon(Icons.Default.Person, null) },
+                    label = { Text("Perfil") }
                 )
             }
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home,
+            startDestination = Screen.ParaTi,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable<Screen.Home> {
-                WelcomeContent()
+            composable<Screen.ParaTi> {
+                ParaTiScreen()
             }
-
-            composable<Screen.ListaEntrenamiento> {
-                ListaEntrenamientoScreen(onNavigateToDetail = { id ->
-                    navController.navigate(Screen.DetalleEntrenamiento(id))
-                })
+            composable<Screen.Calendario> {
+                CalendarioScreen()
             }
-            composable<Screen.DetalleEntrenamiento> { backStackEntry ->
-                val route = backStackEntry.toRoute<Screen.DetalleEntrenamiento>()
-                DetalleEntrenamientoScreen(
-                    id = route.id,
-                    onBack = { navController.popBackStack() }
-                )
+            composable<Screen.NuevoRegistro> {
+                RegistroScreen()
             }
-            composable<Screen.ApiExterna> { DragonBallListScreen() }
-
+            composable<Screen.PerfilUsuario> {
+                PerfilUsuarioScreen(onLogout = onLogout)
+            }
         }
     }
 }
 
 @Composable
-fun WelcomeContent(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+fun PlaceholderScreen(texto: String) {
+    Box(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Text(
-            text = Constantes.TEXT_BIENVENIDO,
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(4.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = Constantes.TEXT_BIENVENIDO_FITNESS,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(2.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = Constantes.TEXT_MENU_EXPLORAR,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "💪 ${Constantes.TEXT_GYM}: ${Constantes.TEXT_GYM_DESCRIPCION}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "🐉 ${Constantes.TEXT_DRAGON_BALL}: ${Constantes.TEXT_DRAGON_BALL_DESCRIPCION}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
+        Text(text = texto)
     }
 }
-@Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
-@Composable
-fun HomeCheckPreview() {
-    HomeScreen(onLogout = {})
-}
 
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable
-fun HomeBottomBarPreview() {
+fun HomeScreenPreview() {
     PowerTrackTheme {
         Scaffold(
             bottomBar = {
@@ -194,26 +127,40 @@ fun HomeBottomBarPreview() {
                     NavigationBarItem(
                         selected = true,
                         onClick = {},
-                        icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = null) },
-                        label = { Text(Constantes.TEXT_GYM) }
+                        icon = { Icon(Icons.Default.Home, null) },
+                        label = { Text("Para ti") }
                     )
                     NavigationBarItem(
                         selected = false,
                         onClick = {},
-                        icon = { Icon(Icons.Default.Public, contentDescription = null) },
-                        label = { Text(Constantes.TEXT_DRAGON_BALL) }
+                        icon = { Icon(Icons.Default.FitnessCenter, null) },
+                        label = { Text("Ejercicios") }
                     )
                     NavigationBarItem(
                         selected = false,
                         onClick = {},
-                        icon = { Icon(Icons.Default.Person, contentDescription = null) },
-                        label = { Text(Constantes.TEXT_PERFIL) }
+                        icon = { Icon(Icons.Default.AddCircle, null) },
+                        label = { Text("Registrar") }
+                    )
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = {},
+                        icon = { Icon(Icons.Default.Person, null) },
+                        label = { Text("Perfil") }
                     )
                 }
             }
         ) { padding ->
-            Box(Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(Constantes.TEXT_CONTENIDO_PANTALLA)
+            Box(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Para Ti - Tus rutinas y plan nutricional",
+                    color = androidx.compose.ui.graphics.Color.White
+                )
             }
         }
     }

@@ -1,8 +1,11 @@
 package com.example.powertrack_app.data.remote.entity
 
 import com.example.powertrack_app.common.Constantes
+import com.example.powertrack_app.domain.model.Comida
 import com.example.powertrack_app.domain.model.Ejercicio
 import com.example.powertrack_app.domain.model.Entrenamiento
+import com.example.powertrack_app.domain.model.PlanNutricional
+import com.example.powertrack_app.domain.model.Rutina
 import com.example.powertrack_app.domain.model.Usuario
 
 data class LoginResponse(
@@ -52,6 +55,95 @@ data class PerfilRequestEntity(
     val diasEntrenamiento: Int,
     val lesion: Int,
     val preferencia: Int
+)
+
+data class RutinaEntity(
+    val id: Long,
+    val nombre: String,
+    val descripcion: String,
+    val tipo: Int,
+    val ejercicios: List<EjercicioEntity>? = emptyList()
+)
+
+data class PlanNutricionalEntity(
+    val id: Long,
+    val nombre: String,
+    val descripcion: String,
+    val tipo: Int,
+    val caloriasObjetivo: Int,
+    val proteinasObjetivo: Double,
+    val carbohidratosObjetivo: Double,
+    val grasasObjetivo: Double,
+    val comidas: List<ComidaEntity>? = emptyList()
+)
+
+data class ComidaEntity(
+    val id: Long,
+    val nombre: String,
+    val calorias: Int,
+    val proteinas: Double,
+    val carbohidratos: Double,
+    val grasas: Double,
+    val categoria: String
+)
+
+data class RegistroEntrenamientoRequestEntity(
+    val rutinaId: Long,
+    val fecha: String,
+    val observaciones: String,
+    val detalles: List<RegistroDetalleRequestEntity>
+)
+
+data class RegistroDetalleRequestEntity(
+    val ejercicioId: Long,
+    val series: Int,
+    val repeticiones: Int,
+    val peso: Double
+)
+
+data class RegistroEntrenamientoResponseEntity(
+    val id: Long,
+    val rutinaId: Long,
+    val fecha: String,
+    val observaciones: String,
+    val detalles: List<RegistroDetalleResponseEntity>
+)
+
+data class RegistroDetalleResponseEntity(
+    val id: Long,
+    val ejercicio: EjercicioEntity,
+    val series: Int,
+    val repeticiones: Int,
+    val peso: Double
+)
+fun RutinaEntity.toDomain() = Rutina(
+    id = id,
+    nombre = nombre,
+    descripcion = descripcion,
+    tipo = tipo,
+    ejercicios = ejercicios?.map { it.toDomain() } ?: emptyList()
+)
+
+fun PlanNutricionalEntity.toDomain() = PlanNutricional(
+    id = id,
+    nombre = nombre,
+    descripcion = descripcion,
+    tipo = tipo,
+    caloriasObjetivo = caloriasObjetivo,
+    proteinasObjetivo = proteinasObjetivo,
+    carbohidratosObjetivo = carbohidratosObjetivo,
+    grasasObjetivo = grasasObjetivo,
+    comidas = comidas?.map { it.toDomain() } ?: emptyList()
+)
+
+fun ComidaEntity.toDomain() = Comida(
+    id = id,
+    nombre = nombre,
+    calorias = calorias,
+    proteinas = proteinas,
+    carbohidratos = carbohidratos,
+    grasas = grasas,
+    categoria = categoria
 )
 
 fun EjercicioEntity.toDomain() = Ejercicio(

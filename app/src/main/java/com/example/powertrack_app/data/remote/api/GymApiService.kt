@@ -6,6 +6,10 @@ import com.example.powertrack_app.data.remote.entity.EntrenamientoEntity
 import com.example.powertrack_app.data.remote.entity.LoginRequest
 import com.example.powertrack_app.data.remote.entity.LoginResponse
 import com.example.powertrack_app.data.remote.entity.PerfilRequestEntity
+import com.example.powertrack_app.data.remote.entity.PlanNutricionalEntity
+import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoRequestEntity
+import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoResponseEntity
+import com.example.powertrack_app.data.remote.entity.RutinaEntity
 import com.example.powertrack_app.data.remote.entity.UpdatePublicKeyRequest
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import retrofit2.Response
@@ -49,5 +53,17 @@ interface GymApiService {
 
     @GET(Constantes.API_PERFIL)
     suspend fun getPerfil(): Response<UsuarioEntity>
+
+    @GET("api/rutinas/recomendada")
+    suspend fun getRutinaRecomendada(): Response<RutinaEntity>
+
+    @GET("api/planes/recomendado")
+    suspend fun getPlanRecomendado(): Response<PlanNutricionalEntity>
+
+    @POST("api/registros")
+    suspend fun createRegistro(@Body registro: RegistroEntrenamientoRequestEntity): Response<RegistroEntrenamientoResponseEntity>
+
+    @GET("api/registros")
+    suspend fun getRegistros(): Response<List<RegistroEntrenamientoResponseEntity>>
 }
 

@@ -8,12 +8,16 @@ import com.example.powertrack_app.data.remote.entity.EntrenamientoEntity
 import com.example.powertrack_app.data.remote.entity.LoginRequest
 import com.example.powertrack_app.data.remote.entity.LoginResponse
 import com.example.powertrack_app.data.remote.entity.PerfilRequestEntity
+import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoRequestEntity
+import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoResponseEntity
 import com.example.powertrack_app.data.remote.entity.UpdatePublicKeyRequest
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import com.example.powertrack_app.data.remote.entity.toDomain
 import com.example.powertrack_app.domain.model.Ejercicio
 import com.example.powertrack_app.domain.model.Entrenamiento
 import com.example.powertrack_app.domain.model.PerfilRequest
+import com.example.powertrack_app.domain.model.PlanNutricional
+import com.example.powertrack_app.domain.model.Rutina
 import com.example.powertrack_app.domain.model.Usuario
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -176,5 +180,60 @@ class GymRepository @Inject constructor(
             NetworkResult.Error("Error de red: ${e.message}")
         }
     }
+
+
+    suspend fun getRutinaRecomendada(): NetworkResult<Rutina> {
+        return try {
+            val response = apiService.getRutinaRecomendada()
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Error al obtener rutina recomendada")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+    suspend fun getPlanRecomendado(): NetworkResult<PlanNutricional> {
+        return try {
+            val response = apiService.getPlanRecomendado()
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Error al obtener plan nutricional")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+    suspend fun createRegistro(registro: RegistroEntrenamientoRequestEntity): NetworkResult<RegistroEntrenamientoResponseEntity> {
+        return try {
+            val response = apiService.createRegistro(registro)
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!)
+            } else {
+                NetworkResult.Error("Error al guardar el entrenamiento: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+    suspend fun getRegistros(): NetworkResult<List<RegistroEntrenamientoResponseEntity>> {
+        return try {
+            val response = apiService.getRegistros()
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!)
+            } else {
+                NetworkResult.Error("Error al obtener registros")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+
 
 }

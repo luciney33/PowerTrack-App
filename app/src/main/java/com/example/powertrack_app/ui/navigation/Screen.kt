@@ -13,12 +13,16 @@ sealed interface Screen : NavKey{
     data object Home : Screen
 
     @Serializable
-    data object ListaEntrenamiento : Screen
-    @Serializable
     data class DetalleEntrenamiento(val id: Long) : Screen
     @Serializable
-    data object ApiExterna : Screen
+    data object ParaTi : Screen
 
+    @Serializable
+    data object Calendario : Screen
+     @Serializable
+    data object NuevoRegistro : Screen
+    @Serializable
+    data object PerfilUsuario : Screen
     @Serializable
     data object PerfilForm : Screen
 }
