@@ -8,5 +8,7 @@ sealed class PerfilFormEvent {
     data class DiasChanged(val value: Int) : PerfilFormEvent()
     data class LesionChanged(val value: Int) : PerfilFormEvent()
     data class PreferenciaChanged(val value: Int) : PerfilFormEvent()
+
+    data class PesoChanged(val value: String) : PerfilFormEvent()
     object Guardar : PerfilFormEvent()
 }

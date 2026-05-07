@@ -24,11 +24,16 @@ import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
 fun RegistroScreen(
+    fecha: String = "",
     viewModel: RegistroViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var mostrarSelector by remember { mutableStateOf(false) }
+
+    LaunchedEffect(fecha) {
+        viewModel.setFecha(fecha)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -50,7 +55,7 @@ fun RegistroScreen(
                         val ejercicio = state.ejercicios[index]
                         TextButton(
                             onClick = {
-                                viewModel.onEvent(RegistroEvent.AñadirEjercicio(ejercicio.id, ejercicio.nombre))
+                                viewModel.onEvent(RegistroEvent.AyadirEjercicio(ejercicio.id, ejercicio.nombre, ejercicio.tipo))
                                 mostrarSelector = false
                             },
                             modifier = Modifier.fillMaxWidth()

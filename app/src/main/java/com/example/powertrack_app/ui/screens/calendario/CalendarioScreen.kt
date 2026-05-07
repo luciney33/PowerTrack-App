@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,142 +20,210 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoResponseEntity
 import com.example.powertrack_app.ui.theme.PowerTrackTheme
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarioScreen(
+    onNuevoRegistro: (String) -> Unit,
     viewModel: CalendarioViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val fechaSeleccionada = remember { mutableStateOf<LocalDate?>(null) }
 
-    when {
-        state.isLoading -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
-        state.error != null -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = state.error!!, color = MaterialTheme.colorScheme.error)
-                    Spacer(Modifier.height(16.dp))
-                    Button(onClick = { viewModel.cargarRegistros() }) { Text("Reintentar") }
-                }
-            }
-        }
-        else -> {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                item {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
                     Text(
                         text = "Mi calendario",
-                        style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Text(
-                        text = "${state.diasEntrenados.size} días entrenados",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(Modifier.height(8.dp))
-                }
-
-                item {
-                    CalendarioMensual(
-                        diasEntrenados = state.diasEntrenados,
-                        onDiaSeleccionado = { viewModel.seleccionarDia(it) }
-                    )
-                }
-
-                state.registroSeleccionado?.let { registro ->
-                    item {
-                        Text(
-                            text = "Entrenamiento del ${registro.fecha}",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            val fecha = fechaSeleccionada.value ?: LocalDate.now()
+                            onNuevoRegistro(fecha.toString())
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AddCircle,
+                            contentDescription = "Añadir entrenamiento",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(32.dp)
                         )
                     }
-                    items(registro.detalles) { detalle ->
-                        Card(modifier = Modifier.fillMaxWidth()) {
+                }
+            )
+        }
+    ) { paddingValues ->
+        when {
+            state.isLoading -> {
+                Box(
+                    Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            state.error != null -> {
+                Box(
+                    Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = state.error!!, color = MaterialTheme.colorScheme.error)
+                        Spacer(Modifier.height(16.dp))
+                        Button(onClick = { viewModel.cargarRegistros() }) { Text("Reintentar") }
+                    }
+                }
+            }
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = "${state.diasEntrenados.size} días entrenados",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(Modifier.height(8.dp))
+                    }
+
+                    item {
+                        CalendarioMensual(
+                            diasEntrenados = state.diasEntrenados,
+                            onDiaSeleccionado = {
+                                fechaSeleccionada.value = it
+                                viewModel.seleccionarDia(it)
+                            }
+                        )
+                    }
+
+                    fechaSeleccionada.value?.let { fecha ->
+                        item {
                             Row(
-                                modifier = Modifier.padding(12.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = detalle.ejercicio.nombre,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-                                    Text(
-                                        text = detalle.ejercicio.tipoEntrenamiento,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                                Column(horizontalAlignment = Alignment.End) {
-                                    Text(
-                                        text = "${detalle.series}x${detalle.repeticiones}",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                    if (detalle.peso > 0) {
-                                        Text(
-                                            text = "${detalle.peso} kg",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
+                                Text(
+                                    text = "Entrenamiento del $fecha",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                if (fecha !in state.diasEntrenados) {
+                                    TextButton(
+                                        onClick = { onNuevoRegistro(fecha.toString()) }
+                                    ) {
+                                        Icon(Icons.Default.Add, contentDescription = null)
+                                        Spacer(Modifier.width(4.dp))
+                                        Text("Añadir")
                                     }
                                 }
                             }
                         }
+
+                        state.registroSeleccionado?.let { registro ->
+                            items(registro.detalles) { detalle ->
+                                Card(modifier = Modifier.fillMaxWidth()) {
+                                    Row(
+                                        modifier = Modifier.padding(12.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = detalle.ejercicio.nombre,
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontWeight = FontWeight.SemiBold
+                                            )
+                                            Text(
+                                                text = detalle.ejercicio.tipoEntrenamiento,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                        Column(horizontalAlignment = Alignment.End) {
+                                            Text(
+                                                text = "${detalle.series}x${detalle.repeticiones}",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary
+                                            )
+                                            if (detalle.peso > 0) {
+                                                Text(
+                                                    text = "${detalle.peso} kg",
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.secondary
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (registro.observaciones.isNotBlank()) {
+                                item {
+                                    Card(modifier = Modifier.fillMaxWidth()) {
+                                        Text(
+                                            text = "${registro.observaciones}",
+                                            modifier = Modifier.padding(12.dp),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
+                        } ?: item {
+                            if (fecha !in state.diasEntrenados) {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "No hay entrenamiento registrado este día",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
                     }
 
-                    if (registro.observaciones.isNotBlank()) {
+                    if (state.registros.isEmpty()) {
                         item {
-                            Card(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    text = "📝 ${registro.observaciones}",
-                                    modifier = Modifier.padding(12.dp),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text("💪", style = MaterialTheme.typography.displayMedium)
+                                    Spacer(Modifier.height(8.dp))
+                                    Text(
+                                        text = "Aún no tienes entrenamientos registrados",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                if (state.registros.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("💪", style = MaterialTheme.typography.displayMedium)
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = "Aún no tienes entrenamientos registrados",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                    }
+                    item { Spacer(Modifier.height(24.dp)) }
                 }
             }
         }

@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.powertrack_app.ui.navigation.Screen
 import com.example.powertrack_app.ui.screens.calendario.CalendarioScreen
 import com.example.powertrack_app.ui.screens.ejercicios.EjerciciosScreen
@@ -66,7 +67,7 @@ fun HomeScreen(onLogout: () -> Unit) {
                 NavigationBarItem(
                     selected = currentRoute?.contains("NuevoRegistro") == true,
                     onClick = {
-                        navController.navigate(Screen.NuevoRegistro) {
+                        navController.navigate(Screen.NuevoRegistro()) {
                             launchSingleTop = true
                         }
                     },
@@ -95,11 +96,18 @@ fun HomeScreen(onLogout: () -> Unit) {
                 ParaTiScreen()
             }
             composable<Screen.Calendario> {
-                CalendarioScreen()
+                CalendarioScreen(
+                    onNuevoRegistro = { fecha ->
+                        navController.navigate(Screen.NuevoRegistro(fecha))
+                    }
+                )
             }
-            composable<Screen.NuevoRegistro> {
-                RegistroScreen()
+
+            composable<Screen.NuevoRegistro> { backStackEntry ->
+                val route = backStackEntry.toRoute<Screen.NuevoRegistro>()
+                RegistroScreen(fecha = route.fecha)
             }
+
             composable<Screen.PerfilUsuario> {
                 PerfilUsuarioScreen(onLogout = onLogout)
             }

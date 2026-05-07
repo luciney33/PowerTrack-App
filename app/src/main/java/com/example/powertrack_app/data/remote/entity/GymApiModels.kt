@@ -44,7 +44,9 @@ data class UsuarioEntity(
     val formularioCompletado: Boolean = false,
     val recomendacion: Int? = null,
     val publicKey: String? = null,
-    val certificado: String? = null
+    val certificado: String? = null,
+    val descripcionRutina: String? = null,
+    val consejosNutricion: String? = null
 )
 
 data class PerfilRequestEntity(
@@ -95,10 +97,14 @@ data class RegistroEntrenamientoRequestEntity(
 )
 
 data class RegistroDetalleRequestEntity(
-    val ejercicioId: Long,
-    val series: Int,
-    val repeticiones: Int,
-    val peso: Double
+    val ejercicioId: Long? = null,
+    val series: Int? = null,
+    val repeticiones: Int? = null,
+    val peso: Double? = null,
+    val duracionMinutos: Int? = null,
+    val velocidad: Double? = null,
+    val inclinacion: Double? = null,
+    val kcalGastadas: Int? = null
 )
 
 data class RegistroEntrenamientoResponseEntity(
@@ -114,7 +120,11 @@ data class RegistroDetalleResponseEntity(
     val ejercicio: EjercicioEntity,
     val series: Int,
     val repeticiones: Int,
-    val peso: Double
+    val peso: Double,
+    val duracionMinutos: Int? = null,
+    val velocidad: Double? = null,
+    val inclinacion: Double? = null,
+    val kcalGastadas: Int? = null
 )
 fun RutinaEntity.toDomain() = Rutina(
     id = id,

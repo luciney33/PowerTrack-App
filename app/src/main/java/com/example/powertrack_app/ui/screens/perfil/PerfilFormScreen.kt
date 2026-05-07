@@ -3,6 +3,7 @@ package com.example.powertrack_app.ui.screens.perfil
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.powertrack_app.ui.common.UiEvent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Surface
+import androidx.compose.ui.text.input.KeyboardType
 import com.example.powertrack_app.ui.theme.PowerTrackTheme
 
 @Composable
@@ -117,6 +119,24 @@ fun PerfilFormScreen(
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall
             )
+        }
+
+        HorizontalDivider()
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = "¿Cuánto pesas?",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+            OutlinedTextField(
+                value = state.peso,
+                onValueChange = { viewModel.onEvent(PerfilFormEvent.PesoChanged(it)) },
+                label = { Text("Peso en kg (ej: 70)") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                singleLine = true
+            )
+            HorizontalDivider()
         }
 
         Button(

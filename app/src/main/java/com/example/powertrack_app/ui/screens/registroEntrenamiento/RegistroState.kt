@@ -14,7 +14,16 @@ data class RegistroState(
 data class DetalleForm(
     val ejercicioId: Long,
     val nombreEjercicio: String,
+    val tipoEjercicio: String,
+    // Fuerza
     val series: String = "3",
     val repeticiones: String = "10",
-    val peso: String = "0.0"
-)
+    val peso: String = "0.0",
+    // Cardio
+    val duracionMinutos: String = "30",
+    val velocidad: String = "8.0",
+    val inclinacion: String = "0.0",
+    val kcalGastadas: String = "0"
+) {
+    val esCardio: Boolean get() = tipoEjercicio == "CARDIO"
+}

@@ -7,5 +7,7 @@ data class ParaTiState(
     val rutina: Rutina? = null,
     val plan: PlanNutricional? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val descripcionRutina: String? = null,
+    val consejosNutricion: String? = null,
 )

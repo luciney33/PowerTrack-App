@@ -1,5 +1,4 @@
 package com.example.powertrack_app.ui.screens.registroEntrenamiento
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.powertrack_app.common.NetworkResult
@@ -31,8 +30,14 @@ class RegistroViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    private val _fecha = MutableStateFlow(LocalDate.now().toString())
+
     init {
         cargarEjercicios()
+    }
+
+    fun setFecha(fecha: String) {
+        if (fecha.isNotBlank()) _fecha.value = fecha
     }
 
     private fun cargarEjercicios() {
@@ -46,13 +51,18 @@ class RegistroViewModel @Inject constructor(
 
     fun onEvent(event: RegistroEvent) {
         when (event) {
-            is RegistroEvent.AñadirEjercicio -> {
+            is RegistroEvent.AyadirEjercicio -> {
                 val nuevo = DetalleForm(
                     ejercicioId = event.ejercicioId,
-                    nombreEjercicio = event.nombre
+                    nombreEjercicio = event.nombre,
+                    tipoEjercicio = event.tipo
                 )
                 _state.update { it.copy(detalles = it.detalles + nuevo) }
             }
+            is RegistroEvent.DuracionChanged -> updateDetalle(event.index) { it.copy(duracionMinutos = event.value) }
+            is RegistroEvent.VelocidadChanged -> updateDetalle(event.index) { it.copy(velocidad = event.value) }
+            is RegistroEvent.InclinacionChanged -> updateDetalle(event.index) { it.copy(inclinacion = event.value) }
+            is RegistroEvent.KcalChanged -> updateDetalle(event.index) { it.copy(kcalGastadas = event.value) }
             is RegistroEvent.EliminarEjercicio -> {
                 _state.update {
                     it.copy(detalles = it.detalles.toMutableList().also { list ->
@@ -90,15 +100,25 @@ class RegistroViewModel @Inject constructor(
             val s = _state.value
             val request = RegistroEntrenamientoRequestEntity(
                 rutinaId = 1L,
-                fecha = LocalDate.now().toString(),
+                fecha = _fecha.value,
                 observaciones = s.observaciones,
                 detalles = s.detalles.map { d ->
-                    RegistroDetalleRequestEntity(
-                        ejercicioId = d.ejercicioId,
-                        series = d.series.toIntOrNull() ?: 3,
-                        repeticiones = d.repeticiones.toIntOrNull() ?: 10,
-                        peso = d.peso.toDoubleOrNull() ?: 0.0
-                    )
+                    if (d.esCardio) {
+                        RegistroDetalleRequestEntity(
+                            ejercicioId = d.ejercicioId,
+                            duracionMinutos = d.duracionMinutos.toIntOrNull() ?: 30,
+                            velocidad = d.velocidad.toDoubleOrNull() ?: 8.0,
+                            inclinacion = d.inclinacion.toDoubleOrNull() ?: 0.0,
+                            kcalGastadas = d.kcalGastadas.toIntOrNull() ?: 0
+                        )
+                    } else {
+                        RegistroDetalleRequestEntity(
+                            ejercicioId = d.ejercicioId,
+                            series = d.series.toIntOrNull() ?: 3,
+                            repeticiones = d.repeticiones.toIntOrNull() ?: 10,
+                            peso = d.peso.toDoubleOrNull() ?: 0.0
+                        )
+                    }
                 }
             )
             when (val result = createRegistroUseCase(request)) {

@@ -25,7 +25,9 @@ data class Usuario(
     val recomendacion: Int? = null,
     val publicKey: ByteArray? = null,
     val certificado: ByteArray? = null,
-    val certificadoVerificado: Boolean = false
+    val certificadoVerificado: Boolean = false,
+    val descripcionRutina: String? = null,
+    val consejosNutricion: String? = null
 )
 data class PerfilRequest(
     val genero: Int,
@@ -34,7 +36,8 @@ data class PerfilRequest(
     val nivel: Int,
     val diasEntrenamiento: Int,
     val lesion: Int,
-    val preferencia: Int
+    val preferencia: Int,
+    val pesoCat: Int = 1
 )
 data class Rutina(
     val id: Long,

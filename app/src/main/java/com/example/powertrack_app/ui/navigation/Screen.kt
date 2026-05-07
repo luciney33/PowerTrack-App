@@ -19,10 +19,12 @@ sealed interface Screen : NavKey{
 
     @Serializable
     data object Calendario : Screen
-     @Serializable
-    data object NuevoRegistro : Screen
     @Serializable
     data object PerfilUsuario : Screen
     @Serializable
     data object PerfilForm : Screen
+
+    @Serializable
+    data class NuevoRegistro(val fecha: String = "") : Screen
+
 }

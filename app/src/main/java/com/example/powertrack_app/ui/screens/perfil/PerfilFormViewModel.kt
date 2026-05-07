@@ -36,6 +36,7 @@ class PerfilFormViewModel @Inject constructor(
             is PerfilFormEvent.DiasChanged -> _state.update { it.copy(diasEntrenamiento = event.value) }
             is PerfilFormEvent.LesionChanged -> _state.update { it.copy(lesion = event.value) }
             is PerfilFormEvent.PreferenciaChanged -> _state.update { it.copy(preferencia = event.value) }
+            is PerfilFormEvent.PesoChanged -> _state.update { it.copy(peso = event.value) }
             is PerfilFormEvent.Guardar -> guardar()
         }
     }
@@ -44,6 +45,14 @@ class PerfilFormViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             val s = _state.value
+            val pesoCat = when (s.peso.toDoubleOrNull() ?: 0.0) {
+                in 0.0..59.9   -> 0
+                in 60.0..75.0  -> 1
+                in 75.1..90.0  -> 2
+                in 90.1..110.0 -> 3
+                else           -> 4
+            }
+
             val result = completarPerfilUseCase(
                 PerfilRequest(
                     genero = s.genero,
@@ -52,7 +61,8 @@ class PerfilFormViewModel @Inject constructor(
                     nivel = s.nivel,
                     diasEntrenamiento = s.diasEntrenamiento,
                     lesion = s.lesion,
-                    preferencia = s.preferencia
+                    preferencia = s.preferencia,
+                    pesoCat = pesoCat
                 )
             )
             when (result) {

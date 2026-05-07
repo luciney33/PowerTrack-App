@@ -10,5 +10,6 @@ data class PerfilFormState(
     val preferencia: Int = 0,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,
+    val peso: String = ""
 )
