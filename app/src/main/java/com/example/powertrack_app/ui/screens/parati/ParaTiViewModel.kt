@@ -35,15 +35,13 @@ class ParaTiViewModel @Inject constructor(
             val planResult = getPlanRecomendado()
             val perfilResult = repository.getPerfil()
 
-            val rutina = if (rutinaResult is NetworkResult.Success) rutinaResult.data else null
-            val plan = if (planResult is NetworkResult.Success) planResult.data else null
             val usuario = if (perfilResult is NetworkResult.Success) perfilResult.data else null
 
             _state.update {
                 it.copy(
                     isLoading = false,
-                    rutina = rutina,
-                    plan = plan,
+                    rutina = if (rutinaResult is NetworkResult.Success) rutinaResult.data else null,
+                    plan = if (planResult is NetworkResult.Success) planResult.data else null,
                     descripcionRutina = usuario?.descripcionRutina,
                     consejosNutricion = usuario?.consejosNutricion
                 )

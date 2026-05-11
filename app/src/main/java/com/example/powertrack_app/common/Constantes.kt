@@ -28,9 +28,13 @@ object Constantes {
     const val API_EJERCICIOS = "api/ejercicios"
 
     const val RETROFIT_SECRETOSAPI = "SecretosRetrofit"
-
     const val RETROFIT_GYMAPI = "GymRetrofit"
     const val RETROFIT_DBAPI = "DragonBallRetrofit"
+    const val RETROFIT_EXERCISEDB = "ExerciseDbRetrofit"
+    const val RETROFIT_OPENFOODFACTS = "OpenFoodFactsRetrofit"
+    const val PLAIN_OKHTTPCLIENT = "PlainOkHttpClient"
+    const val URL_EXERCISEDB = "https://exercisedb.dev/api/v1/"
+    const val URL_OPENFOODFACTS = "https://world.openfoodfacts.org/"
 
     const val ITEMS = "items"
 

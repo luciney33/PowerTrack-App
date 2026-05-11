@@ -57,8 +57,14 @@ interface GymApiService {
     @GET("api/rutinas/recomendada")
     suspend fun getRutinaRecomendada(): Response<RutinaEntity>
 
+    @GET("api/rutinas/{id}")
+    suspend fun getRutinaById(@Path("id") id: Long): Response<RutinaEntity>
+
     @GET("api/planes/recomendado")
     suspend fun getPlanRecomendado(): Response<PlanNutricionalEntity>
+
+    @GET("api/planes/{id}")
+    suspend fun getPlanById(@Path("id") id: Long): Response<PlanNutricionalEntity>
 
     @POST("api/registros")
     suspend fun createRegistro(@Body registro: RegistroEntrenamientoRequestEntity): Response<RegistroEntrenamientoResponseEntity>

@@ -5,7 +5,10 @@ data class Ejercicio(
     val nombre: String,
     val tipo: String,
     val imageUrl: String,
-    val descripcion: String
+    val descripcion: String,
+    val series: Int? = null,
+    val repeticiones: Int? = null,
+    val descansoSeg: Int? = null
 )
 
 data class Entrenamiento(

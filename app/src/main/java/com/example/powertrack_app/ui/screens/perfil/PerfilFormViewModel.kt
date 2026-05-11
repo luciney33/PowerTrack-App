@@ -45,11 +45,12 @@ class PerfilFormViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             val s = _state.value
-            val pesoCat = when (s.peso.toDoubleOrNull() ?: 0.0) {
-                in 0.0..59.9   -> 0
-                in 60.0..75.0  -> 1
-                in 75.1..90.0  -> 2
-                in 90.1..110.0 -> 3
+            val pesoKg = s.peso.toDoubleOrNull() ?: 0.0
+            val pesoCat = when {
+                pesoKg < 55.0  -> 0
+                pesoKg <= 70.0 -> 1
+                pesoKg <= 85.0 -> 2
+                pesoKg <= 100.0 -> 3
                 else           -> 4
             }
 

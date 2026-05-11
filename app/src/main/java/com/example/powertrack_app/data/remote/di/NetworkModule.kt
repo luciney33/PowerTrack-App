@@ -3,7 +3,9 @@ package com.example.powertrack_app.data.remote.di
 import com.example.powertrack_app.BuildConfig
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.data.remote.api.DragonBallApiService
+import com.example.powertrack_app.data.remote.api.ExerciseDbApiService
 import com.example.powertrack_app.data.remote.api.GymApiService
+import com.example.powertrack_app.data.remote.api.OpenFoodFactsApiService
 import com.example.powertrack_app.data.remote.api.SecretosApiService
 import com.example.powertrack_app.data.remote.interceptor.AuthInterceptor
 import dagger.Module
@@ -92,6 +94,58 @@ object NetworkModule {
     @Singleton
     fun provideDragonBallApiService(@Named(Constantes.RETROFIT_DBAPI) retrofit: Retrofit): DragonBallApiService {
         return retrofit.create(DragonBallApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named(Constantes.PLAIN_OKHTTPCLIENT)
+    fun providePlainOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named(Constantes.RETROFIT_EXERCISEDB)
+    fun provideExerciseDbRetrofit(
+        @Named(Constantes.PLAIN_OKHTTPCLIENT) okHttpClient: OkHttpClient
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constantes.URL_EXERCISEDB)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideExerciseDbApiService(
+        @Named(Constantes.RETROFIT_EXERCISEDB) retrofit: Retrofit
+    ): ExerciseDbApiService {
+        return retrofit.create(ExerciseDbApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named(Constantes.RETROFIT_OPENFOODFACTS)
+    fun provideOpenFoodFactsRetrofit(
+        @Named(Constantes.PLAIN_OKHTTPCLIENT) okHttpClient: OkHttpClient
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constantes.URL_OPENFOODFACTS)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOpenFoodFactsApiService(
+        @Named(Constantes.RETROFIT_OPENFOODFACTS) retrofit: Retrofit
+    ): OpenFoodFactsApiService {
+        return retrofit.create(OpenFoodFactsApiService::class.java)
     }
 
 }

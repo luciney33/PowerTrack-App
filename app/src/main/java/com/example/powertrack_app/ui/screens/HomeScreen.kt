@@ -28,6 +28,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.powertrack_app.ui.navigation.Screen
 import com.example.powertrack_app.ui.screens.calendario.CalendarioScreen
+import com.example.powertrack_app.ui.screens.detallePlan.DetallePlanScreen
+import com.example.powertrack_app.ui.screens.detalleRutina.DetalleRutinaScreen
 import com.example.powertrack_app.ui.screens.ejercicios.EjerciciosScreen
 import com.example.powertrack_app.ui.screens.parati.ParaTiScreen
 import com.example.powertrack_app.ui.screens.perfil.usuario.PerfilUsuarioScreen
@@ -93,7 +95,20 @@ fun HomeScreen(onLogout: () -> Unit) {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable<Screen.ParaTi> {
-                ParaTiScreen()
+                ParaTiScreen(
+                    onVerDetalleRutina = { rutinaId ->
+                        navController.navigate(Screen.DetalleRutina(rutinaId))
+                    },
+                    onVerDetallePlan = { planId ->
+                        navController.navigate(Screen.DetallePlan(planId))
+                    }
+                )
+            }
+            composable<Screen.DetalleRutina> {
+                DetalleRutinaScreen(onBack = { navController.popBackStack() })
+            }
+            composable<Screen.DetallePlan> {
+                DetallePlanScreen(onBack = { navController.popBackStack() })
             }
             composable<Screen.Calendario> {
                 CalendarioScreen(

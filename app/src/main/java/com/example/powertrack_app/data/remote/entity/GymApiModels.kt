@@ -21,7 +21,10 @@ data class EjercicioEntity(
     val nombre: String,
     val tipoEntrenamiento: String,
     val imagenUrl: String,
-    val descripcion: String
+    val descripcion: String,
+    val series: Int? = null,
+    val repeticiones: Int? = null,
+    val descansoSeg: Int? = null
 )
 
 data class EntrenamientoEntity(
@@ -56,7 +59,8 @@ data class PerfilRequestEntity(
     val nivel: Int,
     val diasEntrenamiento: Int,
     val lesion: Int,
-    val preferencia: Int
+    val preferencia: Int,
+    val pesoCat: Int = 1
 )
 
 data class RutinaEntity(
@@ -161,7 +165,10 @@ fun EjercicioEntity.toDomain() = Ejercicio(
     nombre = nombre,
     tipo = tipoEntrenamiento,
     imageUrl = imagenUrl,
-    descripcion = descripcion
+    descripcion = descripcion,
+    series = series,
+    repeticiones = repeticiones,
+    descansoSeg = descansoSeg
 )
 
 fun Ejercicio.toEntity() = EjercicioEntity(
@@ -169,7 +176,10 @@ fun Ejercicio.toEntity() = EjercicioEntity(
     nombre = nombre,
     tipoEntrenamiento = tipo,
     imagenUrl = imageUrl,
-    descripcion = descripcion
+    descripcion = descripcion,
+    series = series,
+    repeticiones = repeticiones,
+    descansoSeg = descansoSeg
 )
 
 fun EntrenamientoEntity.toDomain() = Entrenamiento(
@@ -197,5 +207,7 @@ fun UsuarioEntity.toDomain() = Usuario(
     recomendacion = recomendacion,
     publicKey = publicKey?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
     certificado = certificado?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
-    certificadoVerificado = false
+    certificadoVerificado = false,
+    descripcionRutina = descripcionRutina,
+    consejosNutricion = consejosNutricion
 )

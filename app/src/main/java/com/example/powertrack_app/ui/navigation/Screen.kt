@@ -27,4 +27,10 @@ sealed interface Screen : NavKey{
     @Serializable
     data class NuevoRegistro(val fecha: String = "") : Screen
 
+    @Serializable
+    data class DetalleRutina(val rutinaId: Long) : Screen
+
+    @Serializable
+    data class DetallePlan(val planId: Long) : Screen
+
 }

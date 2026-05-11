@@ -1,5 +1,6 @@
 package com.example.powertrack_app.ui.screens.parati
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +23,8 @@ import com.example.powertrack_app.domain.model.Rutina
 
 @Composable
 fun ParaTiScreen(
+    onVerDetalleRutina: (Long) -> Unit = {},
+    onVerDetallePlan: (Long) -> Unit = {},
     viewModel: ParaTiViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -125,39 +128,42 @@ fun ParaTiScreen(
                     }
                 }
 
-
                 state.rutina?.let { rutina ->
-                    item { RutinaCard(rutina) }
-                    if (rutina.ejercicios.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Ejercicios de hoy",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        items(rutina.ejercicios) { ejercicio ->
-                            EjercicioItem(ejercicio)
-                        }
+                    item { RutinaCard(rutina, onClick = { onVerDetalleRutina(rutina.id) }) }
+                }
+
+                val ejercicios = state.rutina?.ejercicios.orEmpty()
+                if (ejercicios.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Ejercicios de hoy",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    items(ejercicios) { ejercicio ->
+                        EjercicioItem(ejercicio)
                     }
                 }
 
                 state.plan?.let { plan ->
                     item {
                         Spacer(Modifier.height(8.dp))
-                        PlanNutricionalCard(plan)
+                        PlanNutricionalCard(plan, onClick = { onVerDetallePlan(plan.id) })
                     }
-                    if (plan.comidas.isNotEmpty()) {
-                        item {
-                            Text(
-                                text = "Tu plan de comidas",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        items(plan.comidas) { comida ->
-                            ComidaItem(comida)
-                        }
+                }
+
+                val comidas = state.plan?.comidas.orEmpty()
+                if (comidas.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Tu plan de comidas",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    items(comidas) { comida ->
+                        ComidaItem(comida)
                     }
                 }
             }
@@ -166,9 +172,11 @@ fun ParaTiScreen(
 }
 
 @Composable
-private fun RutinaCard(rutina: Rutina) {
+private fun RutinaCard(rutina: Rutina, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
@@ -231,9 +239,11 @@ private fun EjercicioItem(ejercicio: Ejercicio) {
 }
 
 @Composable
-private fun PlanNutricionalCard(plan: PlanNutricional) {
+private fun PlanNutricionalCard(plan: PlanNutricional, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )

@@ -155,7 +155,8 @@ class GymRepository @Inject constructor(
                 nivel = perfil.nivel,
                 diasEntrenamiento = perfil.diasEntrenamiento,
                 lesion = perfil.lesion,
-                preferencia = perfil.preferencia
+                preferencia = perfil.preferencia,
+                pesoCat = perfil.pesoCat
             )
             val response = apiService.completarPerfil(entity)
             if (response.isSuccessful && response.body() != null) {
@@ -181,6 +182,32 @@ class GymRepository @Inject constructor(
         }
     }
 
+
+    suspend fun getRutinaById(id: Long): NetworkResult<Rutina> {
+        return try {
+            val response = apiService.getRutinaById(id)
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Rutina no encontrada")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
+
+    suspend fun getPlanById(id: Long): NetworkResult<PlanNutricional> {
+        return try {
+            val response = apiService.getPlanById(id)
+            if (response.isSuccessful && response.body() != null) {
+                NetworkResult.Success(response.body()!!.toDomain())
+            } else {
+                NetworkResult.Error("Plan no encontrado")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("Error de red: ${e.message}")
+        }
+    }
 
     suspend fun getRutinaRecomendada(): NetworkResult<Rutina> {
         return try {
