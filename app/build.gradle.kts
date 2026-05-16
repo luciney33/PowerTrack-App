@@ -25,7 +25,6 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/\"")
-            buildConfigField("String", "BASE_URL_DRAGONBALL", "\"https://dragonball-api.com/api/\"")
         }
         release {
             isMinifyEnabled = false
@@ -34,7 +33,6 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/\"")
-            buildConfigField("String", "BASE_URL_DRAGONBALL", "\"https://dragonball-api.com/api/\"")
         }
     }
     buildFeatures {

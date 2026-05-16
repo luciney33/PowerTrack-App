@@ -46,8 +46,6 @@ data class UsuarioEntity(
     val activo: Boolean = true,
     val formularioCompletado: Boolean = false,
     val recomendacion: Int? = null,
-    val publicKey: String? = null,
-    val certificado: String? = null,
     val descripcionRutina: String? = null,
     val consejosNutricion: String? = null
 )
@@ -191,14 +189,6 @@ fun EntrenamientoEntity.toDomain() = Entrenamiento(
     ejercicios = ejercicios?.map { it.toDomain() } ?: emptyList()
 )
 
-fun Entrenamiento.toEntity(usuarioId: Long) = EntrenamientoEntity(
-    id = id,
-    usuarioId = usuarioId,
-    nombre = nombre,
-    descripcion = descripcion,
-    ejercicios = ejercicios.map { it.toEntity() }
-)
-
 fun UsuarioEntity.toDomain() = Usuario(
     id = id,
     username = username,
@@ -207,9 +197,6 @@ fun UsuarioEntity.toDomain() = Usuario(
     rol = rol,
     formularioCompletado = formularioCompletado,
     recomendacion = recomendacion,
-    publicKey = publicKey?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
-    certificado = certificado?.let { android.util.Base64.decode(it, android.util.Base64.DEFAULT) },
-    certificadoVerificado = false,
     descripcionRutina = descripcionRutina,
     consejosNutricion = consejosNutricion
 )

@@ -10,7 +10,6 @@ import com.example.powertrack_app.data.remote.entity.LoginResponse
 import com.example.powertrack_app.data.remote.entity.PerfilRequestEntity
 import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoRequestEntity
 import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoResponseEntity
-import com.example.powertrack_app.data.remote.entity.UpdatePublicKeyRequest
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import com.example.powertrack_app.data.remote.entity.toDomain
 import com.example.powertrack_app.domain.model.Ejercicio
@@ -133,19 +132,6 @@ class GymRepository @Inject constructor(
         }
     }
 
-    suspend fun updatePublicKey(publicKeyBase64: String): NetworkResult<String> {
-        return try {
-            val request = UpdatePublicKeyRequest(publicKeyBase64)
-            val response = apiService.updatePublicKey(request)
-            if (response.isSuccessful && response.body() != null) {
-                NetworkResult.Success(response.body()!!)
-            } else {
-                NetworkResult.Error("${Constantes.ERROR_ACTUALIZAR_CLAVE_PUBLICA}${response.code()}")
-            }
-        } catch (e: Exception) {
-            NetworkResult.Error("${Constantes.ERROR_RED_ACTUALIZAR_CLAVE_PUBLICA}${e.message}")
-        }
-    }
     suspend fun completarPerfil(perfil: PerfilRequest): NetworkResult<Usuario> {
         return try {
             val entity = PerfilRequestEntity(

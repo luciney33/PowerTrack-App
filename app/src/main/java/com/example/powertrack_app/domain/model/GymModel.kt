@@ -26,9 +26,6 @@ data class Usuario(
     val rol: String,
     val formularioCompletado: Boolean = false,
     val recomendacion: Int? = null,
-    val publicKey: ByteArray? = null,
-    val certificado: ByteArray? = null,
-    val certificadoVerificado: Boolean = false,
     val descripcionRutina: String? = null,
     val consejosNutricion: String? = null
 )
@@ -71,19 +68,4 @@ data class Comida(
     val grasas: Double,
     val categoria: String,
     val imagenUrl: String = ""
-)
-data class RegistroEntrenamiento(
-    val id: Long,
-    val rutinaId: Long,
-    val fecha: String,
-    val observaciones: String,
-    val detalles: List<RegistroDetalle>
-)
-
-data class RegistroDetalle(
-    val ejercicioId: Long,
-    val nombreEjercicio: String,
-    val series: Int,
-    val repeticiones: Int,
-    val peso: Double
 )

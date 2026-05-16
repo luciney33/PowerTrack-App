@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -30,7 +29,6 @@ import com.example.powertrack_app.ui.navigation.Screen
 import com.example.powertrack_app.ui.screens.calendario.CalendarioScreen
 import com.example.powertrack_app.ui.screens.detallePlan.DetallePlanScreen
 import com.example.powertrack_app.ui.screens.detalleRutina.DetalleRutinaScreen
-import com.example.powertrack_app.ui.screens.ejercicios.EjerciciosScreen
 import com.example.powertrack_app.ui.screens.parati.ParaTiScreen
 import com.example.powertrack_app.ui.screens.perfil.usuario.PerfilUsuarioScreen
 import com.example.powertrack_app.ui.screens.registroEntrenamiento.RegistroScreen
@@ -130,15 +128,6 @@ fun HomeScreen(onLogout: () -> Unit) {
     }
 }
 
-@Composable
-fun PlaceholderScreen(texto: String) {
-    Box(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = texto)
-    }
-}
 
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable

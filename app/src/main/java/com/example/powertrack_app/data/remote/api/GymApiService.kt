@@ -10,7 +10,6 @@ import com.example.powertrack_app.data.remote.entity.PlanNutricionalEntity
 import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoRequestEntity
 import com.example.powertrack_app.data.remote.entity.RegistroEntrenamientoResponseEntity
 import com.example.powertrack_app.data.remote.entity.RutinaEntity
-import com.example.powertrack_app.data.remote.entity.UpdatePublicKeyRequest
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import retrofit2.Response
 import retrofit2.http.Body
@@ -44,9 +43,6 @@ interface GymApiService {
 
     @GET(Constantes.API_EJERCICIOS)
     suspend fun getEjercicios(): Response<List<EjercicioEntity>>
-
-    @PUT(Constantes.API_USUARIOS_PUBLIC_KEY)
-    suspend fun updatePublicKey(@Body request: UpdatePublicKeyRequest): Response<String>
 
     @POST(Constantes.API_PERFIL_COMPLETAR)
     suspend fun completarPerfil(@Body perfil: PerfilRequestEntity): Response<UsuarioEntity>

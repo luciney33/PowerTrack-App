@@ -43,16 +43,20 @@ class RegisterViewModel @Inject constructor(
             }
             RegisterEvent.Register -> {
                 val currentState = _state.value
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(currentState.email).matches()) {
+                    _state.update { it.copy(error = Constantes.ERROR_EMAIL_INVALIDO) }
+                    return
+                }
                 if (currentState.password != currentState.confirmPassword) {
                     _state.update { it.copy(error = Constantes.ERROR_PASSWORDS_NO_COINCIDEN) }
                     return
                 }
-                if (currentState.password.length < 8) {
-                    _state.update { it.copy(error = Constantes.ERROR_PASSWORD_MINIMA) }
-                    return
-                }
                 if (currentState.password.isBlank()) {
                     _state.update { it.copy(error = Constantes.ERROR_PASSWORD_VACIA) }
+                    return
+                }
+                if (currentState.password.length < 8) {
+                    _state.update { it.copy(error = Constantes.ERROR_PASSWORD_MINIMA) }
                     return
                 }
                 register()
@@ -62,10 +66,7 @@ class RegisterViewModel @Inject constructor(
 
     private fun register() {
         viewModelScope.launch {
-            _state.update { it.copy(
-                isLoading = true,
-                loadingMessage = Constantes.MSG_GENERANDO_CLAVES
-            ) }
+            _state.update { it.copy(isLoading = true) }
 
             val currentState = _state.value
             when (val result = registerUseCase(
@@ -75,16 +76,12 @@ class RegisterViewModel @Inject constructor(
                 password = currentState.password
             )) {
                 is NetworkResult.Success -> {
-                    _state.update { it.copy(
-                        isLoading = false,
-                        loadingMessage = null
-                    ) }
+                    _state.update { it.copy(isLoading = false) }
                     _uiEvent.send(UiEvent.RegisterSuccess)
                 }
                 is NetworkResult.Error -> {
                     _state.update { it.copy(
                         isLoading = false,
-                        loadingMessage = null,
                         error = result.message ?: Constantes.ERROR_DESCONOCIDO
                     ) }
                 }
