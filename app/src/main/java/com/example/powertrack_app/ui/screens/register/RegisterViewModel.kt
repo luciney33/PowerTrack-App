@@ -21,6 +21,8 @@ class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
+    private val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+
     private val _state = MutableStateFlow(RegisterState())
     val state: StateFlow<RegisterState> = _state.asStateFlow()
 
@@ -43,7 +45,7 @@ class RegisterViewModel @Inject constructor(
             }
             RegisterEvent.Register -> {
                 val currentState = _state.value
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(currentState.email).matches()) {
+                if (!emailRegex.matches(currentState.email)) {
                     _state.update { it.copy(error = Constantes.ERROR_EMAIL_INVALIDO) }
                     return
                 }
