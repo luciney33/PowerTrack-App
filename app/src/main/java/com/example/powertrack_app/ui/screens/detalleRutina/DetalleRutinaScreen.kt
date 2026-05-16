@@ -36,7 +36,7 @@ fun DetalleRutinaScreen(
     DetalleRutinaContent(
         state = state,
         onBack = onBack,
-        onVerGif = { viewModel.verGif(it) },
+        onVerGif = { nombre, url -> viewModel.verGif(nombre, url) },
         onRetry = { viewModel.cargar() },
         onCerrarDialog = { viewModel.cerrarDialog() }
     )
@@ -47,7 +47,7 @@ fun DetalleRutinaScreen(
 private fun DetalleRutinaContent(
     state: DetalleRutinaState,
     onBack: () -> Unit,
-    onVerGif: (String) -> Unit,
+    onVerGif: (String, String) -> Unit,
     onRetry: () -> Unit,
     onCerrarDialog: () -> Unit
 ) {
@@ -129,7 +129,7 @@ private fun DetalleRutinaContent(
                         items(rutina.ejercicios) { ejercicio ->
                             EjercicioCard(
                                 ejercicio = ejercicio,
-                                onVerGif = { onVerGif(ejercicio.nombre) }
+                                onVerGif = { onVerGif(ejercicio.nombre, ejercicio.imageUrl) }
                             )
                         }
                     }
@@ -223,7 +223,6 @@ private fun GifDialog(dialog: GifDialogState, onDismiss: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 when {
-                    dialog.isLoading -> CircularProgressIndicator()
                     dialog.error != null -> Text(
                         dialog.error,
                         color = MaterialTheme.colorScheme.error
@@ -265,7 +264,7 @@ fun DetalleRutinaScreenPreview() {
         DetalleRutinaContent(
             state = DetalleRutinaState(rutina = previewRutina),
             onBack = {},
-            onVerGif = {},
+            onVerGif = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
         )
@@ -279,7 +278,7 @@ fun DetalleRutinaLoadingPreview() {
         DetalleRutinaContent(
             state = DetalleRutinaState(isLoading = true),
             onBack = {},
-            onVerGif = {},
+            onVerGif = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
         )
@@ -293,20 +292,9 @@ fun DetalleRutinaErrorPreview() {
         DetalleRutinaContent(
             state = DetalleRutinaState(error = "No se pudo cargar la rutina"),
             onBack = {},
-            onVerGif = {},
+            onVerGif = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GifDialogLoadingPreview() {
-    PowerTrackTheme {
-        GifDialog(
-            dialog = GifDialogState(ejercicioNombre = "Press de banca", isLoading = true),
-            onDismiss = {}
         )
     }
 }
@@ -316,7 +304,7 @@ fun GifDialogLoadingPreview() {
 fun GifDialogErrorPreview() {
     PowerTrackTheme {
         GifDialog(
-            dialog = GifDialogState(ejercicioNombre = "Sentadilla", error = "GIF no encontrado"),
+            dialog = GifDialogState(ejercicioNombre = "Sentadilla", error = "GIF no disponible para este ejercicio"),
             onDismiss = {}
         )
     }

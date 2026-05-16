@@ -90,7 +90,8 @@ data class ComidaEntity(
     val proteinas: Double,
     val carbohidratos: Double,
     val grasas: Double,
-    val categoria: String
+    val categoria: String,
+    val imagenUrl: String = ""
 )
 
 data class RegistroEntrenamientoRequestEntity(
@@ -157,7 +158,8 @@ fun ComidaEntity.toDomain() = Comida(
     proteinas = proteinas,
     carbohidratos = carbohidratos,
     grasas = grasas,
-    categoria = categoria
+    categoria = categoria,
+    imagenUrl = imagenUrl
 )
 
 fun EjercicioEntity.toDomain() = Ejercicio(

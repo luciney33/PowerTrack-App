@@ -102,40 +102,88 @@ fun RegistroScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = detalle.nombreEjercicio,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Column {
+                            Text(
+                                text = detalle.nombreEjercicio,
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = detalle.tipoEjercicio,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                         IconButton(onClick = { viewModel.onEvent(RegistroEvent.EliminarEjercicio(index)) }) {
                             Icon(Icons.Default.Delete, contentDescription = "Eliminar", tint = MaterialTheme.colorScheme.error)
                         }
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedTextField(
-                            value = detalle.series,
-                            onValueChange = { viewModel.onEvent(RegistroEvent.SeriesChanged(index, it)) },
-                            label = { Text("Series") },
-                            modifier = Modifier.weight(1f),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            singleLine = true
-                        )
-                        OutlinedTextField(
-                            value = detalle.repeticiones,
-                            onValueChange = { viewModel.onEvent(RegistroEvent.RepeticionesChanged(index, it)) },
-                            label = { Text("Reps") },
-                            modifier = Modifier.weight(1f),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            singleLine = true
-                        )
-                        OutlinedTextField(
-                            value = detalle.peso,
-                            onValueChange = { viewModel.onEvent(RegistroEvent.PesoChanged(index, it)) },
-                            label = { Text("Kg") },
-                            modifier = Modifier.weight(1f),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                            singleLine = true
-                        )
+                    Spacer(Modifier.height(8.dp))
+                    if (detalle.esCardio) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedTextField(
+                                value = detalle.duracionMinutos,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.DuracionChanged(index, it)) },
+                                label = { Text("Min") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true
+                            )
+                            OutlinedTextField(
+                                value = detalle.velocidad,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.VelocidadChanged(index, it)) },
+                                label = { Text("km/h") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                singleLine = true
+                            )
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedTextField(
+                                value = detalle.inclinacion,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.InclinacionChanged(index, it)) },
+                                label = { Text("Inclin.") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                singleLine = true
+                            )
+                            OutlinedTextField(
+                                value = detalle.kcalGastadas,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.KcalChanged(index, it)) },
+                                label = { Text("Kcal") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true
+                            )
+                        }
+                    } else {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedTextField(
+                                value = detalle.series,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.SeriesChanged(index, it)) },
+                                label = { Text("Series") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true
+                            )
+                            OutlinedTextField(
+                                value = detalle.repeticiones,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.RepeticionesChanged(index, it)) },
+                                label = { Text("Reps") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true
+                            )
+                            OutlinedTextField(
+                                value = detalle.peso,
+                                onValueChange = { viewModel.onEvent(RegistroEvent.PesoChanged(index, it)) },
+                                label = { Text("Kg") },
+                                modifier = Modifier.weight(1f),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                singleLine = true
+                            )
+                        }
                     }
                 }
             }

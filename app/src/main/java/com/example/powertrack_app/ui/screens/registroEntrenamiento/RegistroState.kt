@@ -25,5 +25,5 @@ data class DetalleForm(
     val inclinacion: String = "0.0",
     val kcalGastadas: String = "0"
 ) {
-    val esCardio: Boolean get() = tipoEjercicio == "CARDIO"
+    val esCardio: Boolean get() = tipoEjercicio in setOf("CARDIO", "HIIT", "MOVILIDAD")
 }

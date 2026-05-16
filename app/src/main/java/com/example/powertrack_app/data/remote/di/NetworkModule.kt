@@ -3,7 +3,6 @@ package com.example.powertrack_app.data.remote.di
 import com.example.powertrack_app.BuildConfig
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.data.remote.api.DragonBallApiService
-import com.example.powertrack_app.data.remote.api.ExerciseDbApiService
 import com.example.powertrack_app.data.remote.api.GymApiService
 import com.example.powertrack_app.data.remote.api.OpenFoodFactsApiService
 import com.example.powertrack_app.data.remote.api.SecretosApiService
@@ -104,27 +103,6 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .build()
-    }
-
-    @Provides
-    @Singleton
-    @Named(Constantes.RETROFIT_EXERCISEDB)
-    fun provideExerciseDbRetrofit(
-        @Named(Constantes.PLAIN_OKHTTPCLIENT) okHttpClient: OkHttpClient
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constantes.URL_EXERCISEDB)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideExerciseDbApiService(
-        @Named(Constantes.RETROFIT_EXERCISEDB) retrofit: Retrofit
-    ): ExerciseDbApiService {
-        return retrofit.create(ExerciseDbApiService::class.java)
     }
 
     @Provides

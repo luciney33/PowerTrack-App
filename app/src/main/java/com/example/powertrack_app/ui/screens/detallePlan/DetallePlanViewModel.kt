@@ -3,8 +3,8 @@ package com.example.powertrack_app.ui.screens.detallePlan
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.common.NetworkResult
-import com.example.powertrack_app.domain.usecase.gym.GetComidaFotoUseCase
 import com.example.powertrack_app.domain.usecase.gym.GetPlanByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,6 @@ import javax.inject.Inject
 class DetallePlanViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getPlanById: GetPlanByIdUseCase,
-    private val getComidaFoto: GetComidaFotoUseCase
 ) : ViewModel() {
 
     private val planId: Long = checkNotNull(savedStateHandle["planId"])
@@ -44,18 +43,14 @@ class DetallePlanViewModel @Inject constructor(
         }
     }
 
-    fun verFoto(comidaNombre: String) {
-        viewModelScope.launch {
-            _state.update { it.copy(fotoDialog = FotoDialogState(comidaNombre, isLoading = true)) }
-            when (val result = getComidaFoto(comidaNombre)) {
-                is NetworkResult.Success -> _state.update {
-                    it.copy(fotoDialog = it.fotoDialog?.copy(fotoUrl = result.data, isLoading = false))
-                }
-                is NetworkResult.Error -> _state.update {
-                    it.copy(fotoDialog = it.fotoDialog?.copy(error = result.message, isLoading = false))
-                }
-            }
+    fun verFoto(comidaNombre: String, imagenUrl: String) {
+        val dialog = if (imagenUrl.isBlank()) {
+            FotoDialogState(comidaNombre, error = "Imagen no disponible para esta comida")
+        } else {
+            val fullUrl = "${Constantes.URL_BASE_EMULATOR}$imagenUrl"
+            FotoDialogState(comidaNombre, fotoUrl = fullUrl)
         }
+        _state.update { it.copy(fotoDialog = dialog) }
     }
 
     fun cerrarDialog() {

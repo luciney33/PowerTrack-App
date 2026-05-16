@@ -30,7 +30,7 @@ fun DetallePlanScreen(
     DetallePlanContent(
         state = state,
         onBack = onBack,
-        onVerFoto = { viewModel.verFoto(it) },
+        onVerFoto = { nombre, url -> viewModel.verFoto(nombre, url) },
         onRetry = { viewModel.cargar() },
         onCerrarDialog = { viewModel.cerrarDialog() }
     )
@@ -41,7 +41,7 @@ fun DetallePlanScreen(
 private fun DetallePlanContent(
     state: DetallePlanState,
     onBack: () -> Unit,
-    onVerFoto: (String) -> Unit,
+    onVerFoto: (String, String) -> Unit,
     onRetry: () -> Unit,
     onCerrarDialog: () -> Unit
 ) {
@@ -102,7 +102,7 @@ private fun DetallePlanContent(
 private fun PlanListContent(
     plan: PlanNutricional,
     modifier: Modifier = Modifier,
-    onVerFoto: (String) -> Unit
+    onVerFoto: (String, String) -> Unit
 ) {
     val comidasPorCategoria = plan.comidas.groupBy { it.categoria }
 
@@ -125,7 +125,7 @@ private fun PlanListContent(
                 )
             }
             items(comidas) { comida ->
-                ComidaCard(comida = comida, onVerFoto = { onVerFoto(comida.nombre) })
+                ComidaCard(comida = comida, onVerFoto = { onVerFoto(comida.nombre, comida.imagenUrl) })
             }
         }
     }
@@ -241,7 +241,6 @@ private fun FotoDialog(dialog: FotoDialogState, onDismiss: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 when {
-                    dialog.isLoading -> CircularProgressIndicator()
                     dialog.error != null -> Text(
                         dialog.error,
                         color = MaterialTheme.colorScheme.error
@@ -286,7 +285,7 @@ fun DetallePlanScreenPreview() {
         DetallePlanContent(
             state = DetallePlanState(plan = previewPlan),
             onBack = {},
-            onVerFoto = {},
+            onVerFoto = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
         )
@@ -300,7 +299,7 @@ fun DetallePlanLoadingPreview() {
         DetallePlanContent(
             state = DetallePlanState(isLoading = true),
             onBack = {},
-            onVerFoto = {},
+            onVerFoto = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
         )
@@ -314,20 +313,9 @@ fun DetallePlanErrorPreview() {
         DetallePlanContent(
             state = DetallePlanState(error = "No se pudo cargar el plan nutricional"),
             onBack = {},
-            onVerFoto = {},
+            onVerFoto = { _, _ -> },
             onRetry = {},
             onCerrarDialog = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FotoDialogLoadingPreview() {
-    PowerTrackTheme {
-        FotoDialog(
-            dialog = FotoDialogState(comidaNombre = "Avena con plátano", isLoading = true),
-            onDismiss = {}
         )
     }
 }
@@ -337,7 +325,7 @@ fun FotoDialogLoadingPreview() {
 fun FotoDialogErrorPreview() {
     PowerTrackTheme {
         FotoDialog(
-            dialog = FotoDialogState(comidaNombre = "Salmón con verduras", error = "Imagen no encontrada"),
+            dialog = FotoDialogState(comidaNombre = "Salmón con verduras", error = "Imagen no disponible para esta comida"),
             onDismiss = {}
         )
     }

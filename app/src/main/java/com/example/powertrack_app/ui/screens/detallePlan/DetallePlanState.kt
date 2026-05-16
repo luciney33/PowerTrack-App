@@ -12,6 +12,5 @@ data class DetallePlanState(
 data class FotoDialogState(
     val comidaNombre: String,
     val fotoUrl: String? = null,
-    val isLoading: Boolean = false,
     val error: String? = null
 )

@@ -12,6 +12,5 @@ data class DetalleRutinaState(
 data class GifDialogState(
     val ejercicioNombre: String,
     val gifUrl: String? = null,
-    val isLoading: Boolean = false,
     val error: String? = null
 )

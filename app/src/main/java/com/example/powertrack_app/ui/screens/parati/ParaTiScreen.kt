@@ -80,7 +80,6 @@ fun ParaTiScreen(
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("✨", style = MaterialTheme.typography.titleLarge)
                                     Spacer(Modifier.width(8.dp))
                                     Text(
                                         text = "Tu plan personalizado",
@@ -109,7 +108,6 @@ fun ParaTiScreen(
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("🥗", style = MaterialTheme.typography.titleLarge)
                                     Spacer(Modifier.width(8.dp))
                                     Text(
                                         text = "Consejos nutricionales",

@@ -69,7 +69,8 @@ data class Comida(
     val proteinas: Double,
     val carbohidratos: Double,
     val grasas: Double,
-    val categoria: String
+    val categoria: String,
+    val imagenUrl: String = ""
 )
 data class RegistroEntrenamiento(
     val id: Long,
