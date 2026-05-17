@@ -6,6 +6,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.example.powertrack_app.ui.screens.HomeScreen
+import com.example.powertrack_app.ui.screens.iaLoading.IaLoadingScreen
 import com.example.powertrack_app.ui.screens.login.LoginScreen
 import com.example.powertrack_app.ui.screens.login.LogoutViewModel
 import com.example.powertrack_app.ui.screens.perfil.PerfilFormScreen
@@ -45,6 +46,15 @@ fun AppNavigation(
             entry<Screen.PerfilForm> {
                 PerfilFormScreen(
                     onPerfilCompletado = {
+                        backStack.clear()
+                        backStack.add(Screen.IaLoading)
+                    }
+                )
+            }
+
+            entry<Screen.IaLoading> {
+                IaLoadingScreen(
+                    onReady = {
                         backStack.clear()
                         backStack.add(Screen.Home)
                     }

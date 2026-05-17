@@ -10,7 +10,6 @@ import com.example.powertrack_app.domain.usecase.gym.DeleteEntrenamientoUseCaseT
 import com.example.powertrack_app.domain.usecase.gym.GetEjerciciosUseCaseTest
 import com.example.powertrack_app.domain.usecase.gym.GetEntrenamientosUseCaseTest
 import com.example.powertrack_app.domain.usecase.gym.SaveEntrenamientoUseCaseTest
-import com.example.powertrack_app.ui.ListaViewModelTest
 import com.example.powertrack_app.ui.LoginViewModelTest
 import com.example.powertrack_app.ui.RegisterViewModelTest
 import com.example.powertrack_app.ui.RegistroViewModelTest
@@ -32,7 +31,6 @@ import org.junit.runners.Suite
     GetEjerciciosUseCaseTest::class,
     LoginViewModelTest::class,
     RegisterViewModelTest::class,
-    ListaViewModelTest::class,
     RegistroViewModelTest::class,
 )
 class PowerTrackTestSuite

@@ -27,12 +27,12 @@ android {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/\"")
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.powertrack.es/\"")
         }
     }
     buildFeatures {
