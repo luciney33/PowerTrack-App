@@ -36,6 +36,7 @@ fun LoginScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        viewModel.resetState()
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.LoginSuccess -> onLoginSuccess()

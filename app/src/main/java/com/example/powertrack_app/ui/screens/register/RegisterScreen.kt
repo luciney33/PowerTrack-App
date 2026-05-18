@@ -38,6 +38,7 @@ fun RegisterScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
+        viewModel.resetState()
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {

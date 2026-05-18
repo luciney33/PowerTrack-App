@@ -28,6 +28,10 @@ class LoginViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    fun resetState() {
+        _state.value = LoginState()
+    }
+
     fun onEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.UsernameChanged -> {

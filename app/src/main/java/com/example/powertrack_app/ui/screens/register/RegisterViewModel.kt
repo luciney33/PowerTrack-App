@@ -29,6 +29,10 @@ class RegisterViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    fun resetState() {
+        _state.value = RegisterState()
+    }
+
     fun onEvent(event: RegisterEvent) {
         when (event) {
             is RegisterEvent.UserChanged -> {
