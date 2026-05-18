@@ -3,7 +3,7 @@ package com.example.powertrack_app.domain.usecase
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.common.NetworkResult
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import com.example.powertrack_app.domain.model.Usuario
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -15,7 +15,7 @@ import org.junit.Test
 
 class RegisterUseCaseTest {
 
-    private lateinit var repository: GymRepository
+    private lateinit var repository: AuthRepository
     private lateinit var useCase: RegisterUseCase
 
     private val usuarioDomain = Usuario(

@@ -2,13 +2,13 @@ package com.example.powertrack_app.domain.usecase
 
 import com.example.powertrack_app.common.Constantes
 import com.example.powertrack_app.common.NetworkResult
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
 import com.example.powertrack_app.domain.model.Usuario
 import javax.inject.Inject
 
 class RegisterUseCase @Inject constructor(
-    private val gymRepository: GymRepository
+    private val gymRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         username: String,

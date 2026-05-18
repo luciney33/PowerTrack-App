@@ -1,7 +1,7 @@
 package com.example.powertrack_app.domain.usecase.gym
 
 import com.example.powertrack_app.common.NetworkResult
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.TrainingRepository
 import com.example.powertrack_app.domain.model.Ejercicio
 import com.example.powertrack_app.domain.model.Entrenamiento
 import io.mockk.coEvery
@@ -13,7 +13,7 @@ import org.junit.Test
 
 class GetEntrenamientosUseCaseTest {
 
-    private lateinit var repository: GymRepository
+    private lateinit var repository: TrainingRepository
     private lateinit var useCase: GetEntrenamientosUseCase
 
     private val entrenamientoFake = Entrenamiento(

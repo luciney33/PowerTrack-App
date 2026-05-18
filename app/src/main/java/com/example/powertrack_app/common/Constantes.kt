@@ -25,6 +25,11 @@ object Constantes {
     const val API_EJERCICIOS = "api/ejercicios"
     const val API_PERFIL = "api/perfil"
     const val API_PERFIL_COMPLETAR = "api/perfil/completar"
+    const val API_RUTINAS_RECOMENDADA = "api/rutinas/recomendada"
+    const val API_RUTINAS_ID = "api/rutinas/{id}"
+    const val API_PLANES_RECOMENDADO = "api/planes/recomendado"
+    const val API_PLANES_ID = "api/planes/{id}"
+    const val API_REGISTROS = "api/registros"
 
     const val RETROFIT_GYMAPI = "GymRetrofit"
 
@@ -84,5 +89,14 @@ object Constantes {
     const val ERROR_GUARDAR_ENTRENAMIENTO = "Error al guardar el entrenamiento"
     const val ERROR_NOMBRE_VACIO = "El nombre no puede estar vacío"
     const val ERROR_PASSWORD_MINIMA = "La contraseña debe tener al menos 8 caracteres"
+
+    const val ERROR_COMPLETAR_PERFIL = "Error al completar perfil: "
+    const val ERROR_OBTENER_PERFIL = "Error al obtener perfil"
+    const val ERROR_RUTINA_NO_ENCONTRADA = "Rutina no encontrada"
+    const val ERROR_PLAN_NO_ENCONTRADO = "Plan no encontrado"
+    const val ERROR_RUTINA_RECOMENDADA = "Error al obtener rutina recomendada"
+    const val ERROR_PLAN_NUTRICIONAL = "Error al obtener plan nutricional"
+    const val ERROR_GUARDAR_REGISTRO = "Error al guardar el registro: "
+    const val ERROR_OBTENER_REGISTROS = "Error al obtener registros"
 
 }

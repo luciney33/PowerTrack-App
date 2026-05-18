@@ -1,6 +1,6 @@
 package com.example.powertrack_app.domain.usecase
 
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import com.example.powertrack_app.data.security.SessionManager
 import io.mockk.every
 import io.mockk.just
@@ -12,7 +12,7 @@ import org.junit.Test
 
 class LogoutUseCaseTest {
 
-    private lateinit var repository: GymRepository
+    private lateinit var repository: AuthRepository
     private lateinit var sessionManager: SessionManager
     private lateinit var useCase: LogoutUseCase
 

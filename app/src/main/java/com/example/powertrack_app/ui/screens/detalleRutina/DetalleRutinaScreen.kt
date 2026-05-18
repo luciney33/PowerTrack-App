@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.ImageLoader
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.example.powertrack_app.domain.model.Ejercicio
@@ -227,11 +227,31 @@ private fun GifDialog(dialog: GifDialogState, onDismiss: () -> Unit) {
                         dialog.error,
                         color = MaterialTheme.colorScheme.error
                     )
-                    dialog.gifUrl != null -> AsyncImage(
+                    dialog.gifUrl != null -> SubcomposeAsyncImage(
                         model = dialog.gifUrl,
                         imageLoader = imageLoader,
                         contentDescription = dialog.ejercicioNombre,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        loading = { CircularProgressIndicator(modifier = Modifier.align(Alignment.Center)) },
+                        error = {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(
+                                    Icons.Default.FitnessCenter,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(48.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    "GIF no disponible",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     )
                 }
             }
@@ -242,7 +262,6 @@ private fun GifDialog(dialog: GifDialogState, onDismiss: () -> Unit) {
     )
 }
 
-// ── Previews ──────────────────────────────────────────────────────────────────
 
 private val previewRutina = Rutina(
     id = 1L,

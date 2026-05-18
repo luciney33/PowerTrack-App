@@ -93,7 +93,7 @@ data class ComidaEntity(
 )
 
 data class RegistroEntrenamientoRequestEntity(
-    val rutinaId: Long,
+    val rutinaId: Long? = null,
     val fecha: String,
     val observaciones: String,
     val detalles: List<RegistroDetalleRequestEntity>
@@ -171,16 +171,6 @@ fun EjercicioEntity.toDomain() = Ejercicio(
     descansoSeg = descansoSeg
 )
 
-fun Ejercicio.toEntity() = EjercicioEntity(
-    id = id,
-    nombre = nombre,
-    tipoEntrenamiento = tipo,
-    imagenUrl = imageUrl,
-    descripcion = descripcion,
-    series = series,
-    repeticiones = repeticiones,
-    descansoSeg = descansoSeg
-)
 
 fun EntrenamientoEntity.toDomain() = Entrenamiento(
     id = id,

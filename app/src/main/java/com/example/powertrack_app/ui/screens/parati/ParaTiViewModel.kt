@@ -3,10 +3,11 @@ package com.example.powertrack_app.ui.screens.parati
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.powertrack_app.common.NetworkResult
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import com.example.powertrack_app.domain.usecase.gym.GetPlanRecomendadoUseCase
 import com.example.powertrack_app.domain.usecase.gym.GetRutinaRecomendadaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class ParaTiViewModel @Inject constructor(
     private val getRutinaRecomendada: GetRutinaRecomendadaUseCase,
     private val getPlanRecomendado: GetPlanRecomendadoUseCase,
-    private val repository: GymRepository
+    private val repository: AuthRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ParaTiState())
@@ -31,9 +32,13 @@ class ParaTiViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
 
-            val rutinaResult = getRutinaRecomendada()
-            val planResult = getPlanRecomendado()
-            val perfilResult = repository.getPerfil()
+            val rutinaDeferred = async { getRutinaRecomendada() }
+            val planDeferred = async { getPlanRecomendado() }
+            val perfilDeferred = async { repository.getPerfil() }
+
+            val rutinaResult = rutinaDeferred.await()
+            val planResult = planDeferred.await()
+            val perfilResult = perfilDeferred.await()
 
             val usuario = if (perfilResult is NetworkResult.Success) perfilResult.data else null
 

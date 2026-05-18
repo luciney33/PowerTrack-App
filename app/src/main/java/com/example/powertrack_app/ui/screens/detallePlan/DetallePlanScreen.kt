@@ -259,7 +259,6 @@ private fun FotoDialog(dialog: FotoDialogState, onDismiss: () -> Unit) {
     )
 }
 
-// ── Previews ──────────────────────────────────────────────────────────────────
 
 private val previewPlan = PlanNutricional(
     id = 1L,

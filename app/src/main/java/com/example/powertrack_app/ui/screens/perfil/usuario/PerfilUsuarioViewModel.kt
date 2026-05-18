@@ -3,7 +3,7 @@ package com.example.powertrack_app.ui.screens.perfil.usuario
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.powertrack_app.common.NetworkResult
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PerfilUsuarioViewModel @Inject constructor(
-    private val repository: GymRepository
+    private val repository: AuthRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PerfilUsuarioState())

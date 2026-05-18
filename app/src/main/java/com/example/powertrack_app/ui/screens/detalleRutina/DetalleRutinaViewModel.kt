@@ -19,7 +19,7 @@ class DetalleRutinaViewModel @Inject constructor(
     private val getRutinaById: GetRutinaByIdUseCase,
 ) : ViewModel() {
 
-    private val rutinaId: Long = checkNotNull(savedStateHandle["rutinaId"])
+    private val rutinaId: Long = savedStateHandle.get<Long>("rutinaId") ?: 0L
 
     private val _state = MutableStateFlow(DetalleRutinaState(isLoading = true))
     val state: StateFlow<DetalleRutinaState> = _state.asStateFlow()

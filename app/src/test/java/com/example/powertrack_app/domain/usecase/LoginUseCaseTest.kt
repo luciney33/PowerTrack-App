@@ -3,10 +3,9 @@ package com.example.powertrack_app.domain.usecase
 import com.example.powertrack_app.common.NetworkResult
 import com.example.powertrack_app.data.remote.entity.LoginResponse
 import com.example.powertrack_app.data.remote.entity.UsuarioEntity
-import com.example.powertrack_app.data.repository.GymRepository
+import com.example.powertrack_app.data.repository.AuthRepository
 import com.example.powertrack_app.data.security.SessionManager
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
@@ -16,7 +15,7 @@ import org.junit.Test
 
 class LoginUseCaseTest {
 
-    private lateinit var repository: GymRepository
+    private lateinit var repository: AuthRepository
     private lateinit var sessionManager: SessionManager
     private lateinit var useCase: LoginUseCase
 

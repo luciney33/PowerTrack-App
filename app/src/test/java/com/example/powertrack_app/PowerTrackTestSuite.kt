@@ -2,7 +2,9 @@ package com.example.powertrack_app
 
 import com.example.powertrack_app.core.NetworkResultTest
 import com.example.powertrack_app.data.SessionManagerTest
-import com.example.powertrack_app.data.repository.GymRepositoryTest
+import com.example.powertrack_app.data.repository.AuthRepositoryTest
+import com.example.powertrack_app.data.repository.NutritionRepositoryTest
+import com.example.powertrack_app.data.repository.TrainingRepositoryTest
 import com.example.powertrack_app.domain.usecase.LoginUseCaseTest
 import com.example.powertrack_app.domain.usecase.LogoutUseCaseTest
 import com.example.powertrack_app.domain.usecase.RegisterUseCaseTest
@@ -21,7 +23,9 @@ import org.junit.runners.Suite
 
     NetworkResultTest::class,
     SessionManagerTest::class,
-    GymRepositoryTest::class,
+    TrainingRepositoryTest::class,
+    AuthRepositoryTest::class,
+    NutritionRepositoryTest::class,
     LoginUseCaseTest::class,
     RegisterUseCaseTest::class,
     LogoutUseCaseTest::class,

@@ -20,7 +20,7 @@ class DetallePlanViewModel @Inject constructor(
     private val getPlanById: GetPlanByIdUseCase,
 ) : ViewModel() {
 
-    private val planId: Long = checkNotNull(savedStateHandle["planId"])
+    private val planId: Long = savedStateHandle.get<Long>("planId") ?: 0L
 
     private val _state = MutableStateFlow(DetallePlanState(isLoading = true))
     val state: StateFlow<DetallePlanState> = _state.asStateFlow()

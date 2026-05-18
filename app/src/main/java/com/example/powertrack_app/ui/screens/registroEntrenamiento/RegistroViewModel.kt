@@ -99,7 +99,7 @@ class RegistroViewModel @Inject constructor(
             _state.update { it.copy(isLoading = true, error = null) }
             val s = _state.value
             val request = RegistroEntrenamientoRequestEntity(
-                rutinaId = 1L,
+                rutinaId = null,
                 fecha = _fecha.value,
                 observaciones = s.observaciones,
                 detalles = s.detalles.map { d ->

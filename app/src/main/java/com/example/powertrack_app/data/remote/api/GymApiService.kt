@@ -1,6 +1,7 @@
 package com.example.powertrack_app.data.remote.api
 
 import com.example.powertrack_app.common.Constantes
+
 import com.example.powertrack_app.data.remote.entity.EjercicioEntity
 import com.example.powertrack_app.data.remote.entity.EntrenamientoEntity
 import com.example.powertrack_app.data.remote.entity.LoginRequest
@@ -50,22 +51,22 @@ interface GymApiService {
     @GET(Constantes.API_PERFIL)
     suspend fun getPerfil(): Response<UsuarioEntity>
 
-    @GET("api/rutinas/recomendada")
+    @GET(Constantes.API_RUTINAS_RECOMENDADA)
     suspend fun getRutinaRecomendada(): Response<RutinaEntity>
 
-    @GET("api/rutinas/{id}")
-    suspend fun getRutinaById(@Path("id") id: Long): Response<RutinaEntity>
+    @GET(Constantes.API_RUTINAS_ID)
+    suspend fun getRutinaById(@Path(Constantes.ID) id: Long): Response<RutinaEntity>
 
-    @GET("api/planes/recomendado")
+    @GET(Constantes.API_PLANES_RECOMENDADO)
     suspend fun getPlanRecomendado(): Response<PlanNutricionalEntity>
 
-    @GET("api/planes/{id}")
-    suspend fun getPlanById(@Path("id") id: Long): Response<PlanNutricionalEntity>
+    @GET(Constantes.API_PLANES_ID)
+    suspend fun getPlanById(@Path(Constantes.ID) id: Long): Response<PlanNutricionalEntity>
 
-    @POST("api/registros")
+    @POST(Constantes.API_REGISTROS)
     suspend fun createRegistro(@Body registro: RegistroEntrenamientoRequestEntity): Response<RegistroEntrenamientoResponseEntity>
 
-    @GET("api/registros")
+    @GET(Constantes.API_REGISTROS)
     suspend fun getRegistros(): Response<List<RegistroEntrenamientoResponseEntity>>
 }
 
